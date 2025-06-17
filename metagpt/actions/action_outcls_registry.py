@@ -15,7 +15,7 @@ def register_action_outcls(func):
     """
 
     @wraps(func)
-    def decorater(*args, **kwargs):
+    def decorator(*args, **kwargs):
         """
         arr example
             [<class 'metagpt.actions.action_node.ActionNode'>, 'test', {'field': (str, Ellipsis)}]
@@ -39,4 +39,4 @@ def register_action_outcls(func):
         action_outcls_registry[outcls_id] = out_cls
         return out_cls
 
-    return decorater
+    return decorator
