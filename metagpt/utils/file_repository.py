@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 from datetime import datetime
+import uuid
 from pathlib import Path
 from typing import Dict, List, Set
 
@@ -182,12 +183,12 @@ class FileRepository:
 
     @staticmethod
     def new_filename():
-        """Generate a new filename based on the current timestamp and a UUID suffix.
+        """Generate a new filename using the current timestamp and a unique UUID.
 
-        :return: A new filename string.
+        :return: A new filename string in the format ``YYYYMMDDHHMMSS_<uuid>``.
         """
         current_time = datetime.now().strftime("%Y%m%d%H%M%S")
-        return current_time
+        return f"{current_time}_{uuid.uuid4().hex}"
 
     async def save_doc(self, doc: Document, dependencies: List[str] = None):
         """Save content to a file and update its dependencies.
