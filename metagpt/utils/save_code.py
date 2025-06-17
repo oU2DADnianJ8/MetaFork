@@ -2,21 +2,25 @@
 # @Date    : 12/12/2023 4:14 PM
 # @Author  : stellahong (stellahong@fuzhi.ai)
 # @Desc    :
+from __future__ import annotations
+
 import os
 
 import nbformat
+
+from nbformat import NotebookNode
 
 from metagpt.const import DATA_PATH
 from metagpt.utils.common import write_json_file
 
 
-def save_code_file(name: str, code_context: str, file_format: str = "py") -> None:
+def save_code_file(name: str, code_context: str | NotebookNode, file_format: str = "py") -> None:
     """
     Save code files to a specified path.
 
     Args:
     - name (str): The name of the folder to save the files.
-    - code_context (str): The code content.
+    - code_context (str | NotebookNode): The code content or notebook object.
     - file_format (str, optional): The file format. Supports 'py' (Python file), 'json' (JSON file), and 'ipynb' (Jupyter Notebook file). Default is 'py'.
 
 
@@ -35,6 +39,10 @@ def save_code_file(name: str, code_context: str, file_format: str = "py") -> Non
         data = {"code": code_context}
         write_json_file(file_path, data, encoding="utf-8", indent=2)
     elif file_format == "ipynb":
-        nbformat.write(code_context, file_path)
+        if isinstance(code_context, NotebookNode):
+            nb = code_context
+        else:
+            nb = nbformat.reads(code_context, as_version=4)
+        nbformat.write(nb, file_path)
     else:
         raise ValueError("Unsupported file format. Please choose 'py', 'json', or 'ipynb'.")
