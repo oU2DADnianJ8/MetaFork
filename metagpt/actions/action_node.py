@@ -632,13 +632,15 @@ class ActionNode:
         if self.schema:
             schema = self.schema
 
+        context = self.compile(context=self.context, schema=schema, mode=mode, exclude=exclude)
+
         if mode == FillMode.CODE_FILL.value:
             result = await self.code_fill(context, function_name, timeout)
             self.instruct_content = self.create_class()(**result)
             return self
 
         elif mode == FillMode.XML_FILL.value:
-            context = self.xml_compile(context=self.context)
+            context = self.xml_compile(context=context)
             result = await self.xml_fill(context, images=images)
             self.instruct_content = self.create_class()(**result)
             return self

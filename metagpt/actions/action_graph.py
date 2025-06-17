@@ -7,7 +7,10 @@
 """
 from __future__ import annotations
 
-# from metagpt.actions.action_node import ActionNode
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from metagpt.actions.action_node import ActionNode
 
 
 class ActionGraph:
@@ -22,7 +25,7 @@ class ActionGraph:
         """Add a node to the graph"""
         self.nodes[node.key] = node
 
-    def add_edge(self, from_node: "ActionNode", to_node: "ActionNode"):
+    def add_edge(self, from_node: ActionNode, to_node: ActionNode):
         """Add an edge to the graph"""
         if from_node.key not in self.edges:
             self.edges[from_node.key] = []
